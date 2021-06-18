@@ -22,7 +22,7 @@ set -e
   cd ~/
   git clone https://github.com/anuruddhal/ballerina-performance
 )
-echo "$1 perf.test.com" | sudo tee -a /etc/hosts
+echo "$1 bal.perf.test" | sudo tee -a /etc/hosts
 
 echo "--------Running test ${2}--------"
 pushd ~/ballerina-performance/tests/"${2}"/scripts/

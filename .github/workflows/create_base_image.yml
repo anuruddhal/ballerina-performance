@@ -11,16 +11,6 @@ jobs:
       TEST_NAME: "h1_h1_passthrough"
     steps:
     - uses: actions/checkout@v2
-    # - name: Write K8S cluster ingress to file
-    #   run: |
-    #     kubectl get ing h1-h1-passthrough -o "jsonpath={.status.loadBalancer.ingress[0].ip}" > $GITHUB_WORKSPACE/scripts/ip.txt
-    #     echo ${TEST_NAME} > $GITHUB_WORKSPACE/scripts/scenario.txt
-    #     cat $GITHUB_WORKSPACE/scripts/ip.txt
-    #     cd $GITHUB_WORKSPACE
-    #     mkdir artifacts
-    #     cp -r scripts/ artifacts
-    #     cp -r tests/ artifacts
-    #     cp -r utils/ artifacts
     - name: Login via Az module
       uses: azure/login@v1
       with:
@@ -40,11 +30,3 @@ jobs:
         customizer-script: |
           sudo cp -r /tmp/base-image/ /
           sh /base-image/init.sh
-
-    # - name: Create VM Instance
-    #   uses: azure/CLI@v1
-    #   with:
-    #     azcliversion: 2.0.72
-    #     inlineScript: |
-    #       az vm create --resource-group "${{ secrets.CLUSTER_RESOURCE_GROUP }}"  --name "bal-perf-vm-${{ GITHUB.RUN_NUMBER }}"  --admin-username "${{ secrets.VM_USER }}" --admin-password "${{ secrets.VM_PWD }}" --location  eastus \
-    #       --image "${{ steps.imageBuilder.outputs.custom-image-uri }}"
