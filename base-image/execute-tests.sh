@@ -17,21 +17,22 @@
 # Running the Load Test
 # ----------------------------------------------------------------------------
 set -e
+REPO_NAME="ballerina-performance-cloud"
 
 (
   cd ~/
-  git clone https://github.com/anuruddhal/ballerina-performance
+  git clone https://github.com/ballerina-platform/${REPO_NAME}
 )
 echo "$1 bal.perf.test" | sudo tee -a /etc/hosts
 
 echo "--------Running test ${2}--------"
-pushd ~/ballerina-performance/tests/"${2}"/scripts/
+pushd ~/${REPO_NAME}/tests/"${2}"/scripts/
 ./run.sh "${2}"
 popd
 echo "--------End test--------"
 
 echo "--------Processing Results--------"
-pushd ~/ballerina-performance/tests/"${2}"/results/
+pushd ~/${REPO_NAME}/tests/"${2}"/results/
 echo "--------Splitting Results--------"
 jtl-splitter.sh -- -f original.jtl -t 300 -u SECONDS -s
 ls -ltr
@@ -42,7 +43,7 @@ JMeterPluginsCMD.sh --generate-csv summary.csv --input-jtl original-measurement.
 echo "--------CSV generated--------"
 
 echo "--------Merge csv--------"
-create-csv.sh summary.csv ~/ballerina-performance/summary/"${2}".csv
+create-csv.sh summary.csv ~/${REPO_NAME}/summary/"${2}".csv
 echo "--------CSV merged--------"
 popd
 echo "--------Results processed--------"
